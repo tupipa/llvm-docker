@@ -6,7 +6,7 @@
 
 This step requires Docker CE to be installed. You can following [this post](https://docs.docker.com/install/) to install Docker, or a simpler routine [using snap](https://github.com/docker/docker-snap), like this:
 
-	sudo snap install Docker
+	sudo snap install docker
 
 After Docker installed. You can now download this repo and start the container with all dependencies installed to build LLVM with Clang. 
 
