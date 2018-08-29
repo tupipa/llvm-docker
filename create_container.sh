@@ -1,14 +1,14 @@
 #!/bin/bash
 
+###########################################
+# To customize the script
+
+maxMem="2048m" # main memory limit for container, e.g. "2048m", "2g", etc.
+#maxMemSwap="2048m" # maximum size of memory the contianer is allowed to swap to disk.
+maxCPUs="3.5" # number of cpu resources the container can use
 
 
-# get current directory
 
-#cite: https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within
-#scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-#sharedDir="$(cd ../.. && pwd)"
-#echo "set par of par dir as workdir: $sharedDir" 
 
 function Usage {
   echo "*************************"
@@ -62,7 +62,8 @@ echo "use shared dir $sharedDir"
 
 echo "find HOWTOs at README.md"
 
-sudo docker run -ti --name=clang-dev -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
+#sudo docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=clang-dev -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
+sudo docker run -ti --memory="$maxMem" --cpus="$maxCPUs" --name=clang -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
 
 if [ "$?" -ne "0" ];then
   echo ""
