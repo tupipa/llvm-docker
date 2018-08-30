@@ -97,7 +97,7 @@ ninja $CMAKE_INSTALL_TARGETS
 popd
 
 # Cleanup.
-#rm -rf "$CLANG_BUILD_DIR/build"
+rm -rf "$CLANG_BUILD_DIR/build"
 echo "clean up ignored, clang build dir at $CLANG_BUILD_DIR"
 
 echo ""

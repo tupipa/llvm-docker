@@ -3,12 +3,15 @@
 ###########################################
 # To customize the script
 
-maxMem="2048m" # main memory limit for container, e.g. "2048m", "2g", etc.
-#maxMemSwap="2048m" # maximum size of memory the contianer is allowed to swap to disk.
-maxCPUs="3.5" # number of cpu resources the container can use
+maxMem="14g" # main memory limit for container, e.g. "2048m", "2g", etc.
+maxMemSwap="28g" # maximum size of memory and swap size combined. -1 will allow container to use unlimited swap available on host.
+maxCPUs="3" # number of cpu resources the container can use
 
+containerImage="tupipa/clang"
+containerName="clang"
+sshPort="8822"
 
-
+ssh_pub_key_file="ssh_pub_key"
 
 function Usage {
   echo "*************************"
@@ -20,7 +23,8 @@ function Usage {
   echo ""
   echo " <shared_dir_full_path>: "
   echo "      a directory on your host in full path. This will be the shared directory between docker container and the host machine."
-  echo ""
+  echo " *** there must be a file contain a one-line ssh pub key with file name <shared_dir_full_path>/ssh_pub_key"
+  echo " this key is used to log into container via port $sshPort"
   echo "*************************"
   echo ""
 
@@ -29,6 +33,13 @@ function Usage {
 if [ "$1" = "" ];then
   echo "please give the directory on your host machine to be shared with the container"
   echo ""
+  Usage
+  exit 1
+fi
+
+if [ ! -e "$1/$ssh_pub_key_file" ]; then 
+  echo "ERROR: please give a ssh pub key file in shared directory: $1/$ssh_pub_key_file"
+  echo "this file contains the public key authorized to log into container via ssh $containerIP -p $sshPort"
   Usage
   exit 1
 fi
@@ -58,12 +69,14 @@ if [ ! -d "$sharedDir" ];then
 fi
 
 
+echo "use container image: $containerImage"
+echo "use container name: $containerName"
 echo "use shared dir $sharedDir"
+echo "open ssh port: $sshPort"
 
 echo "find HOWTOs at README.md"
 
-#sudo docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=clang-dev -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
-sudo docker run -ti --memory="$maxMem" --cpus="$maxCPUs" --name=clang -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
+docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=$containerName -v $sharedDir:$sharedDirInContainer -p $sshPort:22 $containerImage
 
 if [ "$?" -ne "0" ];then
   echo ""
