@@ -3,7 +3,7 @@ FROM tupipa/clang-debian9
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-           build-essential cmake python wget subversion unzip openssh-server nano git && \
+           ca-certificates build-essential cmake python wget subversion unzip openssh-server nano git && \
     rm -rf /var/lib/apt/lists/*
 
 ADD scripts /root/scripts

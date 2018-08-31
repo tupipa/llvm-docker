@@ -9,7 +9,7 @@ maxCPUs="3" # number of cpu resources the container can use
 
 containerImage="tupipa/clang"
 containerName="clang"
-sshPort="8822"
+sshPort="8899"
 
 ssh_pub_key_file="ssh_pub_key"
 
