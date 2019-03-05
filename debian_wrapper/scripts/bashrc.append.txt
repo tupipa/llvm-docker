@@ -1,4 +1,11 @@
 
+# You may uncomment the following lines if you want `ls' to be colorized:
+export LS_OPTIONS='--color=auto'
+#eval "`dircolors`"
+alias ls='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -l'
+alias l='ls $LS_OPTIONS -lA'
+
 # export PS1='\[\e]0;\u@\h: \w\a\]\[\033[01;32m\][\d \t UTC]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]# '
 
 service ssh start
@@ -13,3 +20,4 @@ fi
 insertKey=$(cat /root/llvm/ssh_pub_key)
 
 grep -q -F "$insertKey" /root/.ssh/authorized_keys || echo "$insertKey" >> /root/.ssh/authorized_keys
+

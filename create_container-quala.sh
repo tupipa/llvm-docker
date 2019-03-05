@@ -3,13 +3,14 @@
 ###########################################
 # To customize the script
 
-maxMem="14g" # main memory limit for container, e.g. "2048m", "2g", etc.
-maxMemSwap="28g" # maximum size of memory and swap size combined. -1 will allow container to use unlimited swap available on host.
+maxMem="8g" # main memory limit for container, e.g. "2048m", "2g", etc.
+maxMemSwap="16g" # maximum size of memory and swap size combined. -1 will allow container to use unlimited swap available on host.
 maxCPUs="3" # number of cpu resources the container can use
 
 containerImage="tupipa/clang"
-containerName="clangll"
-sshPort="8899"
+containerName="quala" #"clangll"
+sshPort="8800"
+workdir="llvm"
 
 ssh_pub_key_file="ssh_pub_key"
 
@@ -50,7 +51,7 @@ if [ "$#" -ne "1" ];then
 fi
 
 sharedDir=$1
-sharedDirInContainer="/root/llvm"
+sharedDirInContainer="/root/$workdir"
 
 if [ ! -d "$sharedDir" ];then
 

@@ -3,15 +3,15 @@
 ###########################################
 # To customize the script
 
-maxMem="14g" # main memory limit for container, e.g. "2048m", "2g", etc.
-maxMemSwap="28g" # maximum size of memory and swap size combined. -1 will allow container to use unlimited swap available on host.
+maxMem="8g" # main memory limit for container, e.g. "2048m", "2g", etc.
+maxMemSwap="16g" # maximum size of memory and swap size combined. -1 will allow container to use unlimited swap available on host.
 maxCPUs="3" # number of cpu resources the container can use
 
-containerImage="tupipa/clang"
-containerName="clangll"
-sshPort="8899"
+containerImage="ubuntu:14.04"
+containerName="quala48" #"clangll"
+sshPort="8802"
+workdir="llvm"
 
-ssh_pub_key_file="ssh_pub_key"
 
 function Usage {
   echo "*************************"
@@ -23,8 +23,6 @@ function Usage {
   echo ""
   echo " <shared_dir_full_path>: "
   echo "      a directory on your host in full path. This will be the shared directory between docker container and the host machine."
-  echo " *** there must be a file contain a one-line ssh pub key with file name <shared_dir_full_path>/ssh_pub_key"
-  echo " this key is used to log into container via port $sshPort"
   echo "*************************"
   echo ""
 
@@ -37,20 +35,13 @@ if [ "$1" = "" ];then
   exit 1
 fi
 
-if [ ! -e "$1/$ssh_pub_key_file" ]; then 
-  echo "ERROR: please give a ssh pub key file in shared directory: $1/$ssh_pub_key_file"
-  echo "this file contains the public key authorized to log into container via ssh $containerIP -p $sshPort"
-  Usage
-  exit 1
-fi
-
 if [ "$#" -ne "1" ];then
    Usage
    exit 1
 fi
 
 sharedDir=$1
-sharedDirInContainer="/root/llvm"
+sharedDirInContainer="/root/$workdir"
 
 if [ ! -d "$sharedDir" ];then
 
@@ -73,8 +64,6 @@ echo "use container image: $containerImage"
 echo "use container name: $containerName"
 echo "use shared dir $sharedDir"
 echo "open ssh port: $sshPort"
-
-echo "find HOWTOs at README.md"
 
 docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=$containerName -v $sharedDir:$sharedDirInContainer -p $sshPort:22 $containerImage
 
