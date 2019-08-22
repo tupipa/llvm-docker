@@ -17,7 +17,7 @@ function Usage {
   echo "*************************"
   echo "Usage: "
   echo ""
-  echo "    $0  <shared_dir_full_path>"
+  echo "    bash $0  <shared_dir_full_path>"
   echo ""
   echo "Parameters:"
   echo ""
@@ -76,7 +76,12 @@ echo "open ssh port: $sshPort"
 
 echo "find HOWTOs at README.md"
 
+#<<<<<<< Updated upstream
 docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=$containerName -v $sharedDir:$sharedDirInContainer -p $sshPort:22 $containerImage
+#=======
+#sudo docker run -ti --memory="$maxMem" --memory-swap="$maxMemSwap" --cpus="$maxCPUs" --name=clang-dev -v $sharedDir:$sharedDirInContainer tupipa/clang-debian8:latest 
+#sudo docker run -ti --memory="$maxMem" --cpus="$maxCPUs" --name=clang -v $sharedDir:$sharedDirInContainer tupipa/clang:latest 
+#>>>>>>> Stashed changes
 
 if [ "$?" -ne "0" ];then
   echo ""
